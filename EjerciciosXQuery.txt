@@ -1,0 +1,233 @@
+CÓDIGO 3
+
+EJERCICIO 1:
+----------------
+	LOGICA:
+for $valor in distinct-values(//produc/cod_zona)
+return count(//produc[cod_zona = $valor])
+
+----------------
+	RESULTADO:
+4
+
+3
+
+4
+
+2
+
+****************************************
+
+EJERCICIO 2:
+----------------
+	LOGICA:
+for $zona in distinct-values(//produc/cod_zona)
+return //produc[cod_zona = $zona]//denominacion
+----------------
+	RESULTADO:
+<denominacion>Placa Base MSI G41M-P26</denominacion>
+
+<denominacion>Micro Intel Core i5-2320</denominacion>
+
+<denominacion>Memoria DDR3 G.Skill 2GB</denominacion>
+
+<denominacion>Memoria DDR3 G.Skill 4GB</denominacion>
+
+<denominacion>Micro Intel Core i5 2500</denominacion>
+
+<denominacion>HD Seagate Barracuda 250GB SATA</denominacion>
+
+<denominacion>Memoria DDR3 Kingston HyperX 4GB</denominacion>
+
+<denominacion>HD Caviar Blue 500GB SATA3</denominacion>
+
+<denominacion>Tarjeta gráfica Asus GeForce EN210 Silent 1GB</denominacion>
+
+<denominacion>Tarjeta gráfica Nvidia Express 1GB</denominacion>
+
+****************************************
+
+EJERCICIO 3:
+----------------
+	LOGICA:
+for $zona in distinct-values(//produc/cod_zona)
+let $precio_max := max(//produc[cod_zona = $zona]//precio)
+let $denominacion:= //produc[precio = $precio_max]//denominacion
+return concat($denominacion, ": ", $precio_max, " EUROS &#10;")
+
+----------------
+	RESULTADO:
+
+"Micro Intel Core i5-2320: 120 EUROS"
+
+"Micro Intel Core i5 2500: 170 EUROS"
+
+"HD Caviar Blue 500GB SATA3: 150 EUROS"
+
+"Micro Intel Dual Core G620: 60 EUROS" 
+
+****************************************
+
+EJERCICIO 4:
+----------------
+	LOGICA:
+(<placa>{/productos/produc/denominacion[contains(., 'Placa Base')]}</placa>,
+<micro>{/productos/produc/denominacion[contains(., 'Micro')]}</micro>,
+<memoria>{/productos/produc/denominacion[contains(., 'Memoria')]}</memoria>,
+<otros>{/productos/produc/denominacion[not(contains(., 'Memoria') or contains(., 'Micro') or contains(., 'Placa Base'))]}</otros>)
+
+----------------
+	RESULTADO:
+<placa>
+    <denominacion>Placa Base MSI G41M-P26</denominacion>
+    <denominacion>Placa Base ASRock G41M-S3 </denominacion>
+</placa>
+
+<micro>
+    <denominacion>Micro Intel Core i5-2320</denominacion>
+    <denominacion>Micro Intel Core i5 2500</denominacion>
+    <denominacion>Micro Intel Dual Core G620</denominacion>
+</micro>
+
+<memoria>
+    <denominacion>Memoria DDR3 G.Skill 2GB</denominacion>
+    <denominacion>Memoria DDR3 G.Skill 4GB</denominacion>
+    <denominacion>Memoria DDR3 Kingston HyperX 4GB</denominacion>
+</memoria>
+
+<otros>
+    <denominacion>HD Seagate Barracuda 250GB SATA</denominacion>
+    <denominacion>HD Caviar Blue 500GB SATA3</denominacion>
+    <denominacion>Tarjeta gráfica Asus GeForce EN210 Silent 1GB</denominacion>
+    <denominacion>Tarjeta gráfica Gigabyte GeForce 1GB</denominacion>
+    <denominacion>Tarjeta gráfica Nvidia Express 1GB</denominacion>
+</otros>
+
+
+****************************************
+
+
+CÓDIGO 4
+
+EJERCICIO 1:
+----------------
+	LOGICA:
+for $c in //sucursal/@codigo
+let $tipo_ahorros:=count(//sucursal[@codigo=$c]//cuenta[@tipo="AHORRO"])
+let $tipo_pensiones:= count(//sucursal[@codigo=$c]//cuenta[@tipo="PENSIONES"])
+return concat("Codigo de sucursal: ", $c, " - Numero de cuentas de ahorro y pensiones: ", $tipo_ahorros, " y ", $tipo_pensiones)
+
+----------------
+	RESULTADO:
+"Codigo de sucursal: SUC1 - Numero de cuentas de ahorro y pensiones: 4 y 2"
+
+"Codigo de sucursal: SUC2 - Numero de cuentas de ahorro y pensiones: 2 y 0"
+
+"Codigo de sucursal: SUC3 - Numero de cuentas de ahorro y pensiones: 2 y 2"
+
+****************************************
+
+EJERCICIO 2:
+----------------
+	LOGICA:
+for $sucur in /sucursales/sucursal return (data($sucur/@codigo), $sucur/director/text(), $sucur/poblacion/text(), sum($sucur/cuenta/saldodebe), sum($sucur/cuenta/saldohaber))
+
+----------------
+	RESULTADO:
+"SUC1"
+
+Alicia Gómez
+
+Madrid
+
+3.0e2
+
+4.9e4
+
+"SUC2"
+
+Fernando Rato
+
+Talavera
+
+1.2e4
+
+2.0e4
+****************************************
+
+EJERCICIO 3:
+----------------
+	LOGICA:
+for $sucur in /sucursales/sucursal[count(cuenta) > 3] return (data($sucur/@codigo), $sucur/director/text(), $sucur/poblacion/text())
+
+----------------
+	RESULTADO:
+
+"SUC1"
+
+Alicia Gómez
+
+Madrid
+
+"SUC3"
+
+Pedro Martín
+
+Talavera
+
+
+****************************************
+
+EJERCICIO 4:
+----------------
+	LOGICA:
+for $sucur in /sucursales/sucursal return (data($sucur/@codigo), 
+$sucur/cuenta[saldodebe = max($sucur/cuenta/saldodebe)]/*/text())
+
+----------------
+	RESULTADO:
+"SUC1"
+
+SUC1
+
+<cuenta tipo="AHORRO">
+			  <nombre>Antonio García</nombre>
+				<numero>123456</numero>
+				<saldohaber>21000</saldohaber>
+				<saldodebe>200</saldodebe>
+			</cuenta>
+
+SUC2
+
+<cuenta tipo="AHORRO">
+			  <nombre>Marcelo Saez</nombre>
+				<numero>30303036</numero>
+				<saldohaber>15000</saldohaber>
+				<saldodebe>12000</saldodebe>
+			</cuenta>
+
+SUC3
+
+<cuenta tipo="AHORRO">
+		    <nombre>Pedro Guerra</nombre>
+				<numero>1606778</numero>
+				<saldohaber>31000</saldohaber>
+				<saldodebe>1000</saldodebe>
+			</cuenta>
+
+****************************************
+
+EJERCICIO 5:
+----------------
+	LOGICA:
+/sucursales/sucursal/cuenta[data(@tipo) = 'PENSIONES' and aportacion = max(/sucursales/sucursal/cuenta/aportacion)]
+
+----------------
+	RESULTADO:
+
+<cuenta tipo="PENSIONES">
+			   <nombre>Juan Gil</nombre>
+				 <numero>99112200</numero>
+				 <aportacion>30000</aportacion>
+			</cuenta>
+****************************************
