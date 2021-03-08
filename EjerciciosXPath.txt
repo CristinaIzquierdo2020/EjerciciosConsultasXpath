@@ -1,0 +1,210 @@
+EJERCICIO 1:
+----------------
+	LOGICA:
+/productos/produc/denominacion | /productos/produc/precio
+----------------
+	RESULTADO:
+<denominacion>Placa Base MSI G41M-P26</denominacion>
+
+<precio>50</precio>
+
+<denominacion>Micro Intel Core i5-2320</denominacion>
+
+<precio>120</precio>
+
+<denominacion>Micro Intel Core i5 2500</denominacion>
+
+<precio>170</precio>
+
+<denominacion>HD Seagate Barracuda 250GB SATA</denominacion>
+
+<precio>80</precio>
+
+<denominacion>HD Caviar Blue 500GB SATA3</denominacion>
+
+<precio>150</precio>
+
+*****************************************************
+EJERCICIO 2:
+----------------
+	LOGICA:
+//produc[denominacion[contains(.,"Placa Base")]]
+----------------
+	RESULTADO:
+<produc>
+    <cod_prod>1010</cod_prod>
+    <denominacion>Placa Base MSI G41M-P26</denominacion>
+    <precio>50</precio>
+    <stock_actual>10</stock_actual>
+    <stock_minimo>3</stock_minimo>
+    <cod_zona>10</cod_zona>
+  </produc>
+
+<produc>
+  <cod_prod>1022</cod_prod>
+    <denominacion>Placa Base ASRock G41M-S3 </denominacion>
+    <precio>52</precio>
+    <stock_actual>2</stock_actual>
+    <stock_minimo>2</stock_minimo>
+    <cod_zona>30</cod_zona>
+  </produc>
+
+
+*****************************************************
+EJERCICIO 3:
+----------------
+	LOGICA:
+----------------
+//produc[cod_zona = 20 and precio = min(//produc[cod_zona = 20]/precio)]
+----------------
+	RESULTADO:
+<produc>
+    <cod_prod>1021</cod_prod>
+	<denominacion>Memoria DDR3 Kingston HyperX 4GB</denominacion>
+	<precio>16</precio>
+	<stock_actual>15</stock_actual>
+	<stock_minimo>4</stock_minimo>
+	<cod_zona>20</cod_zona>
+  </produc>
+
+*****************************************************
+
+EJERCICIO 4:
+----------------
+	LOGICA:
+//produc[denominacion[contains(.,"Memoria")] and cod_zona = 10]
+----------------
+	RESULTADO:
+<produc>
+    <cod_prod>1019</cod_prod>
+	<denominacion>Memoria DDR3 G.Skill 2GB</denominacion>
+	<precio>10</precio>
+	<stock_actual>5</stock_actual>
+	<stock_minimo>3</stock_minimo>
+	<cod_zona>10</cod_zona>
+  </produc>
+<produc>
+      <cod_prod>1020</cod_prod>
+	  <denominacion>Memoria DDR3 G.Skill 4GB</denominacion>
+	  <precio>30</precio>
+	  <stock_actual>30</stock_actual>
+	  <stock_minimo>10</stock_minimo>
+	  <cod_zona>10</cod_zona>
+  </produc>
+
+*****************************************************
+EJERCICIO 5:
+----------------
+	LOGICA:
+avg(/productos/produc[starts-with(denominacion,'Micro')]/precio)
+----------------
+	RESULTADO:
+116.66666666666667
+
+
+*****************************************************
+
+EJERCICIO 6:
+----------------
+	LOGICA:
+/productos/produc[number(stock_minimo)>number(stock_actual)]
+----------------
+	RESULTADO:
+<produc>
+    <cod_prod>1011</cod_prod>
+	<denominacion>Micro Intel Core i5-2320</denominacion>
+	<precio>120</precio>
+	<stock_actual>3</stock_actual>
+	<stock_minimo>5</stock_minimo>
+	<cod_zona>10</cod_zona>
+  </produc>
+
+<produc>
+    <cod_prod>1012</cod_prod>
+    <denominacion>Micro Intel Core i5 2500</denominacion>
+    <precio>170</precio>
+    <stock_actual>5</stock_actual>
+    <stock_minimo>6</stock_minimo>
+    <cod_zona>20</cod_zona>
+  </produc>
+
+<produc>
+    <cod_prod>1014</cod_prod>
+	<denominacion>HD Caviar Blue 500GB SATA3</denominacion>
+	<precio>150</precio>
+	<stock_actual>5</stock_actual>
+	<stock_minimo>6</stock_minimo>
+	<cod_zona>30</cod_zona>
+  </produc>
+
+<produc>
+    <cod_prod>1016</cod_prod>
+	<denominacion>Tarjeta gráfica Gigabyte GeForce 1GB</denominacion>
+	<precio>50</precio>
+	<stock_actual>5</stock_actual>
+	<stock_minimo>6</stock_minimo>
+	<cod_zona>40</cod_zona>
+  </produc>
+
+*****************************************************
+
+EJERCICIO 7:
+----------------
+	LOGICA:
+/productos/produc[number(stock_minimo)>number(stock_actual)and cod_zona = 40]/denominacion | /productos/produc[number(stock_minimo)>number(stock_actual)and cod_zona = 40]/precio
+----------------
+	RESULTADO:
+<denominacion>Tarjeta gráfica Gigabyte GeForce 1GB</denominacion>
+
+<precio>50</precio>
+
+*****************************************************
+
+EJERCICIO 8:
+----------------
+	LOGICA:
+//produc[precio = max(//produc/precio)]
+----------------
+	RESULTADO:
+<produc>
+    <cod_prod>1012</cod_prod>
+    <denominacion>Micro Intel Core i5 2500</denominacion>
+    <precio>170</precio>
+    <stock_actual>5</stock_actual>
+    <stock_minimo>6</stock_minimo>
+    <cod_zona>20</cod_zona>
+  </produc>
+
+*****************************************************
+
+EJERCICIO 9:
+----------------
+	LOGICA:
+//produc[cod_zona = 20 and precio = min(//produc[cod_zona = 20]/precio)]
+----------------
+	RESULTADO:
+<produc>
+    <cod_prod>1021</cod_prod>
+	<denominacion>Memoria DDR3 Kingston HyperX 4GB</denominacion>
+	<precio>16</precio>
+	<stock_actual>15</stock_actual>
+	<stock_minimo>4</stock_minimo>
+	<cod_zona>20</cod_zona>
+  </produc>
+
+*****************************************************
+
+EJERCICIO 10:
+----------------
+	LOGICA:
+//produc[cod_zona = 10 and precio = max(//produc[cod_zona = 10]/precio)]
+----------------
+	RESULTADO:
+<produc>
+    <cod_prod>1011</cod_prod>
+	<denominacion>Micro Intel Core i5-2320</denominacion>
+	<precio>120</precio>
+	<stock_actual>3</stock_actual>
+	<stock_minimo>5</stock_minimo>
+	<cod_zona>10</cod_zona>
+  </produc>
